@@ -12,16 +12,25 @@ class EtihadDb:
         con.commit()
 
     def add_file(self, filename, content):
-        con = self.create_connection()
-        sql = ''' INSERT INTO files(filename, content)
-                   VALUES(?,?) '''
+        if self.get_file(filename):
+            self.update(filename, content)
+        else:
+            con = self.create_connection()
+            sql = ''' INSERT INTO files(filename, content)
+                       VALUES(?,?) '''
 
-        con.execute(sql, (filename, content))
-        con.commit()
+            con.execute(sql, (filename, content))
+            con.commit()
 
 
     def update(self, filename, content):
-        pass
+
+
+        con = self.create_connection()
+        sql = '''UPDATE files SET content=? WHERE filename=? '''
+
+        con.execute(sql, (content, filename))
+        con.commit()
 
     def get_file_list(self):
         con = self.create_connection()

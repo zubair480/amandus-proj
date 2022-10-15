@@ -16,6 +16,7 @@ ALLOWED_EXTENSIONS = {'txt'}
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
+
 @app.route('/index')
 def index():
     parser = Parser()
@@ -23,10 +24,10 @@ def index():
 
     return render_template('index.html')
 
+
 def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
-
 
 
 class Etihadly():
@@ -38,16 +39,16 @@ class Etihadly():
             return f"<span class='allwrong'>{partDict['part']}</span>"
 
         if "possible" in partDict:
-            posibilities = "Suggestions: " + str(", ".join(partDict["possible"]))
+            posibilities = "Suggestions: " + \
+                str(", ".join(partDict["possible"]))
 
-            return f"<div class='justdiv'><span class='error' " \
-                   f"  onClick='alert(\"{posibilities}\")'>{partDict['part']}" \
+            return f"<div class='justdiv'><span class='error'> " \
+                   f" {partDict['part']}" \
                    f"<span>" \
                    f"<p class='myTooltip'>{posibilities}</p>" \
                    f"</div>"
 
         return partDict["part"]
-
 
     def build(self, backmatch):
         res = ""
@@ -56,13 +57,12 @@ class Etihadly():
                 res += self.decorate(part)
             res += "\n"
 
-
         return res
 
 
 @app.route('/show_file', methods=['GET'])
 def show_file():
-    filename = request.args.get('file', default = None, type = str)
+    filename = request.args.get('file', default=None, type=str)
     content = EtihadDb().get_file(filename)
     if content:
         print(content)
@@ -70,13 +70,12 @@ def show_file():
         res = p.parse_text(content)
 
         return render_template("index.html",
-            header=res.get("header"),
-            carrier=res.get("carrier"),
-            ULDs=res.get("ULDs"),
-            etihadly=Etihadly().build(p.backmatches),
-            dbfiles=EtihadDb("db.db").get_file_list())
-
-
+                               header=res.get("header"),
+                               carrier=res.get("carrier"),
+                               ULDs=res.get("ULDs"),
+                               etihadly=Etihadly().build(p.backmatches),
+                               dbfiles=EtihadDb("db.db").get_file_list(),
+                               filename=filename)
 
     return render_template("index.html",
                            header=None,
@@ -85,6 +84,19 @@ def show_file():
                            etihadly=None,
                            dbfiles=EtihadDb("db.db").get_file_list())
 
+
+@app.route('/edit', methods=['GET', 'POST'])
+def edit():
+    if request.method == "POST":
+        print("post")
+        editor = request.form.get("editor")
+        editor = editor.replace("\\r", "")
+        filename = request.form.get("filename")
+        EtihadDb().update(filename, editor)
+        print(editor)
+        print(filename)
+
+    return redirect(f"show_file?file={filename}")
 
 
 @app.route('/upload', methods=['GET', 'POST'])
@@ -101,48 +113,15 @@ def upload_files():
     return redirect("show_file")
 
 
-
 @app.route('/', methods=['GET', 'POST'])
 def upload_file():
-
-    if request.method == 'POST':
-
-        if 'file' not in request.files:
-            flash('No file part')
-            return redirect(request.url)
-        file = request.files['file']
-
-        if file.filename == '':
-            flash('No selected file')
-            return redirect(request.url)
-        if file and allowed_file(file.filename):
-            filename = secure_filename(file.filename)
-            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            p = Parser()
-            res = p.parse_file(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-
-            
-            f = open(os.path.join(
-                app.config['UPLOAD_FOLDER'], filename))
-            file_contents = f.read()
-            f.close()
+    return render_template('index.html', dbfiles=EtihadDb("db.db").get_file_list())
 
 
-            return render_template("index.html",
-                                   header=res.get("header"),
-                                   carrier=res.get("carrier"),
-                                   ULDs=res.get("ULDs"),
-                                   etihadly=Etihadly().build(p.backmatches),
-                                   dbfiles=EtihadDb("db.db").get_file_list())
-
-
-
-    else:
-        return render_template('index.html')
-
+@app.route('/rules', methods=['GET', 'POST'])
+def rules():
+    return render_template('rules.html')
 
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)
-
-

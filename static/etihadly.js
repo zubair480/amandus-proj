@@ -1,9 +1,10 @@
 $(document).ready(function(){
 
     $("#re-parse").click(function(){
-      $('#editor').find('span').remove();
+      $('#editor').find('p').remove();
       var divContent = $('#editor').text();
-      //alert(divContent);
-      alert(divContent);
+      $('#parse-request').html(divContent);
+      $("#re-parse-form").submit();
+      //#alert(divContent);
     });
   });

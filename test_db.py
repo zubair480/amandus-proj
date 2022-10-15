@@ -10,6 +10,8 @@ class MyTestCase(unittest.TestCase):
         db.create_db()
         db.add_file("file1", "abcd")
         db.add_file("file2", "abcd")
+        db.add_file("file2", "abcd")
+        db.add_file("file2", "abcd")
         db.add_file("file3", "abcd")
         db.add_file("file4", "abcd")
         result = db.get_file_list()

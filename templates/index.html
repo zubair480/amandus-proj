@@ -16,22 +16,40 @@
 
 <body>
     <!-- Nav -->
-    <nav class="navbar navbar-dark bg-dark shadow mb-4">
-        <!-- a to redirect to home index route -->
-        <a class="navbar-brand mx-5" href="/">Etihadly: Smart CPM Parser</a>
-    </nav>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow mb-4">
+        <a class="navbar-brand" style="margin-left: 50px" href="#">Etihadly: Smart CPM Parser</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav" style="margin-left: 50%">
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item active">
+              <a class="nav-link" href="#">Editor </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">DataOverview</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Rules</a>
+            </li>
+            
+          </ul>
+        </div>
+      </nav>
+  
+      
+    
     <div class="row">
         <div class="col-3">
 
-<div class="container" style="height: 600px;overflow:hidden">
+<div class="container" style="overflow-y: scroll;height:300px">
 
 
-   
     <ul class="list-group">
         <li class="list-group-item">Parser History</li>
         {% for file in dbfiles %}
-        <li class="list-group-item list-group-item-light  my-1 d-flex align-items-center">
-                        <div style="width: 30px; height: 30px" class="m-2">
+        <li class="list-group-item list-group-item-light  my-1 d-flex align-items-center" style="margin: 0;padding:0">
+                        <div style="width: 20px; height: 20px" class="m-2">
                          <img
                           src="{{url_for('static', filename='images/files.png')}}"
                            alt=""
