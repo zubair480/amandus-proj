@@ -112,6 +112,9 @@
                             Parsed file
                         </button>
                     </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="pills-contact-tab" data-bs-toggle="pill" data-bs-target="#pills-contact" type="button" role="tab" aria-controls="pills-contact" aria-selected="false">JSON</button>
+                      </li>
                 </ul>
                     <div class="tab-content" id="pills-tabContent">
                     <!--div class="tab-pane fade show active" id="pills-home" role="tabpanel"
@@ -120,7 +123,7 @@
                     </div-->
                     <div class="tab-pane show active" id="etihadly-pane" role="tabpanel"
                         aria-labelledby="pills-home-tab">
-                        <button id="re-parse">Parse</button>
+                        <button id="re-parse" class="btn btn-primary mb-2">Parse</button>
 
                         <div class="editor" id="editor" style="white-space: pre-wrap;" data-gramm="false">{{etihadly|safe}}</div>
 
@@ -175,6 +178,17 @@
                             <div class="alert alert-danger" role="alert">Error</div>
                             <div class="alert alert-danger" role="alert">Error</div>
                         </div>
+                    </div>
+                    <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab">
+                        <div class="d-flex flex-column">
+                            <textarea
+                              name="RulesTextArea"
+                              id="rulesTextArea"
+                              cols="80"
+                              rows="10"
+                            ></textarea>
+                            <button class="btn btn-warning w-25 my-5">CLick Me</button>
+                          </div>
                     </div>
                 </div>
             </div>
