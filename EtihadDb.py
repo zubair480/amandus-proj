@@ -8,28 +8,63 @@ class EtihadDb:
     def create_db(self):
         con = self.create_connection()
         con.execute("DROP TABLE IF EXISTS files")
-        con.execute("CREATE TABLE  files(filename VARCHAR(200), content TEXT) ")
+        con.execute("DROP TABLE IF EXISTS errors")
+        con.execute("CREATE TABLE files(source VARCHAR(200), filename VARCHAR(200), content TEXT) ")
+        con.execute("CREATE TABLE errors(source VARCHAR(200), filename VARCHAR(200), line VARCHAR(300), field VARCHAR(300), value VARCHAR(300), error_type VARCHAR(20)) ")
+        #con.execute("CREATE TABLE thenrule(ruleid int, rule_group)")
         con.commit()
 
-    def add_file(self, filename, content):
-        if self.get_file(filename):
-            self.update(filename, content)
+    def add_error(self, source, filename, line, field, value, error_type):
+        con = self.create_connection()
+        print("adding error")
+        sql = '''INSERT INTO errors(source, filename, line, field, value, error_type)
+                               VALUES(?,?,?,?,?,?)'''
+
+        con.execute(sql, (source, filename, line, field, value, error_type))
+        con.commit()
+
+    def get_all_sources(self):
+        con = self.create_connection()
+
+        cur = con.cursor()
+        cur.execute(f"SELECT DISTINCT source FROM files")
+        rows = cur.fetchall()
+        return rows
+
+    def get_errors_by_source(self, source):
+        con = self.create_connection()
+
+        cur = con.cursor()
+        cur.execute(f"SELECT * FROM errors WHERE source={source}")
+        rows = cur.fetchall()
+        return rows
+
+    def get_errors(self):
+        con = self.create_connection()
+
+        cur = con.cursor()
+        cur.execute(f"SELECT * FROM errors")
+        rows = cur.fetchall()
+        return rows
+
+
+    def add_file(self, source, filename, content):
+        if self.get_file_content(source, filename):
+            self.update(source, filename, content)
         else:
             con = self.create_connection()
-            sql = ''' INSERT INTO files(filename, content)
-                       VALUES(?,?) '''
+            sql = ''' INSERT INTO files(source, filename, content)
+                       VALUES(?,?,?) '''
 
-            con.execute(sql, (filename, content))
+            con.execute(sql, (source, filename, content))
             con.commit()
 
 
-    def update(self, filename, content):
-
-
+    def update(self, source, filename, content):
         con = self.create_connection()
-        sql = '''UPDATE files SET content=? WHERE filename=? '''
+        sql = '''UPDATE files SET content=? WHERE source=? AND filename=? '''
 
-        con.execute(sql, (content, filename))
+        con.execute(sql, (content, source, filename))
         con.commit()
 
     def get_file_list(self):
@@ -40,14 +75,14 @@ class EtihadDb:
         rows = cur.fetchall()
         return rows
 
-    def get_file(self, filename):
+    def get_file_content(self, source, filename):
         con = self.create_connection()
 
         cur = con.cursor()
-        cur.execute(f"SELECT * FROM files WHERE filename = '{filename}' LIMIT 1") # TODO: SQL injection!!!
+        cur.execute(f"SELECT * FROM files WHERE filename='{filename}' AND source='{source}' LIMIT 1") # TODO: SQL injection!!!
         rows = cur.fetchall()
         if len(rows) == 1:
-            return rows[0][1]
+            return rows[0][2]
         return None
 
     def create_connection(self):

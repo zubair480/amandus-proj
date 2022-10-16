@@ -56,18 +56,72 @@
       </div>
     </nav>
 
-    <div class="container">
-      <h1>Rules</h1>
-      <div class="d-flex flex-column">
-        <textarea
-          name="RulesTextArea"
-          id="rulesTextArea"
-          cols="80"
-          rows="10"
-        ></textarea>
-        <button class="btn btn-warning w-25 my-5">CLick Me</button>
+    <div class="container" >
+      <h1>Analysis</h1>
+      <nav>
+        <!-- Tab Buttons -->
+        <div class="nav nav-tabs" id="nav-tab" role="tablist">
+          <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home" aria-selected="true">Latest Error</button>
+          <button class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile" aria-selected="false">Common Error</button>
+        </div>
+      </nav>
+      <!-- Tab content -->
+      <!-- First button content -->
+      <div class="tab-content" id="nav-tabContent">
+        <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+          <div class="d-flex flex-column" style="overflow-y: scroll;height:400px">
+            <table class="table"  >
+              <thead style="display:static">
+    
+                <tr>
+                  <td style="font-weight:600;font-size: 20px" >datasource</td>
+                <td style="font-weight:600;font-size: 20px" >filename</td>
+                <td style="font-weight:600;font-size: 20px" >line</td>
+                <td style="font-weight:600;font-size: 20px" >field</td>
+                <td style="font-weight:600;font-size: 20px" >value</td>
+                <td style="font-weight:600;font-size: 20px" >x</td>
+                <td style="font-weight:600;font-size: 20px;" >y</td>
+              </tr>
+            </thead>
+            {% for error in all_errors %}
+            <tbody >
+    
+              <tr>
+                <td><a href="#">{{error[0]}}</a></td>
+                <td><a href="/show_file?file={{error[1]}}">{{error[1]}}</a></td>
+                <td scope="col">{{error[2]}}</td>
+                <td scope="col">{{error[3]}}</td>
+                <td scope="col">{{error[4]}}</td>
+                <td scope="col">{{error[5]}}</td>
+                <td scope="col">{{error[6]}}</td>
+                <td scope="col"><a href="/create_rule">create rule</a></td>
+              </tr>
+            </tbody>
+            {% endfor %}
+            </table>
+    
+          </div>
+    
+        </div>
+        <!-- Second button content -->
+        <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
+          Common errors will be displayed here
+        </div>
       </div>
-    </div>
+
+
+      <div class="d-flex flex-column">
+        <h2>By data source</h2>
+        
+
+
+      </div>
+      <div class="d-flex flex-column">
+        <h2>By data source</h2>
+      </div>
+      <div class="d-flex flex-column">
+        <h2>By ...</h2>
+      </div>
     <!-- error console -->
     <!-- bootstrap Javascript -->
     <script>

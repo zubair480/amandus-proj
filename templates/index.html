@@ -16,6 +16,7 @@
 
 <body>
     <!-- Nav -->
+    <!-- Nav -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow mb-4">
         <a class="navbar-brand" style="margin-left: 50px" href="#">Etihadly: Smart CPM Parser</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -27,22 +28,19 @@
               <a class="nav-link" href="#">Editor </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">DataOverview</a>
+              <a class="nav-link" href="/analysis">Analysis</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">Rules</a>
+              <a class="nav-link" href="/rules">Rules</a>
             </li>
-            
+
           </ul>
         </div>
       </nav>
-  
-      
-    
     <div class="row">
         <div class="col-3">
 
-<div class="container" style="overflow-y: scroll;height:300px">
+<div class="container" style="overflow-y: scroll;height:600px">
 
 
     <ul class="list-group">
@@ -56,7 +54,7 @@
                            style="width: 100%; height: 100%"
                          />
                        </div>
-                        <a href="show_file?file={{file[0]}}">{{file[0]}}</a>
+                        <a href="show_file?file={{file[1]}}">{{file[1]}}</a>
                     </li>
                      {%endfor%}
                 </ul>
@@ -64,6 +62,7 @@
         </div>
         <div class="col-8">
             <div class="container">
+
                 <!-- Upload form -->
                 <form class="d-flex align-items-center justify-content-between" method=post enctype=multipart/form-data action="/upload">
                     <div class="form-group w-75">
@@ -73,7 +72,7 @@
                         <small id="filehelp" class="form-text text-muted">You can only upload a txt file.</small>
                     </div>
                     <div class="">
-                        <button type="submit" type=submit value="Upload" class="btn btn-warning text-white" style="width: 400px">
+                        <button type="submit"  value="Upload" class="btn btn-primary" style="width: 400px">
                             Submit
                         </button>
                     </div>
@@ -90,6 +89,7 @@
 
             <div class="container mt-4">
                 <!-- tabs -->
+                <h2>{{filename}}</h2>
                 <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
                     <!--li class="nav-item" role="presentation">
                         <button class="nav-link active" id="pills-home-tab" data-bs-toggle="pill"
@@ -102,13 +102,13 @@
                         <button class="nav-link active" id="etihadly" data-bs-toggle="pill"
                             data-bs-target="#etihadly-pane" type="button" role="tab" aria-controls="pills-profile"
                             aria-selected="true">
-                            Etihadly
+                            CPM Editor
                         </button>
                     </li>
                     <li class="nav-item" role="presentation">
                         <button class="nav-link" id="pills-profile-tab" data-bs-toggle="pill"
                             data-bs-target="#pills-profile" type="button" role="tab" aria-controls="pills-profile"
-                            aria-selected="false" class="text-warning">
+                            aria-selected="false">
                             Parsed file
                         </button>
                     </li>
@@ -120,10 +120,18 @@
                     </div-->
                     <div class="tab-pane show active" id="etihadly-pane" role="tabpanel"
                         aria-labelledby="pills-home-tab">
-                        <button id="re-parse" class="btn btn-warning m-2 text-white">Parse</button>
-                        <div class="editor" id="editor" style="white-space: pre-wrap;" data-gramm="false">{{etihadly | safe}}</div>
+                        <button id="re-parse">Parse</button>
 
+                        <div class="editor" id="editor" style="white-space: pre-wrap;" data-gramm="false">{{etihadly|safe}}</div>
 
+                        <div style="display:none">
+                            <form id="re-parse-form" name="re-parse-form" action="edit" method=post enctype=multipart/form-data />
+                            <textarea id="parse-request" name="editor"></textarea>
+                            <input type="text" name="filename" value="{{filename}}" />
+                            <button type="submit"/>Submit</button>
+
+                            </form>
+                        </div>
                     </div>
                     <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
                         <!-- Table container -->

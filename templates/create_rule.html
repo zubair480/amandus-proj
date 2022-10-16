@@ -57,15 +57,43 @@
     </nav>
 
     <div class="container">
-      <h1>Rules</h1>
+      <h1>Add rule</h1>
       <div class="d-flex flex-column">
-        <textarea
-          name="RulesTextArea"
-          id="rulesTextArea"
-          cols="80"
-          rows="10"
-        ></textarea>
-        <button class="btn btn-warning w-25 my-5">CLick Me</button>
+        <div>
+        if
+          <div>
+            <input>
+              <select>
+                <option>Equal</option>
+                <option>Not Equal</option>
+                <option>Regex Match</option>
+              </select>
+            <input>
+          </div>
+          <div>AND</div>
+          <div>
+            <input>
+              <select>
+                <option>Equal</option>
+                <option>Not Equal</option>
+                <option>Regex Match</option>
+              </select>
+            <input>
+          </div>
+
+        <div>THEN</div>
+          <div>
+            <input>
+              <select>
+                <option>Replace</option>
+                <option>Delete</option>
+
+              </select>
+            <input>
+          </div>
+        </div>
+
+        <button class="btn btn-warning w-25 my-5">Add rule</button>
       </div>
     </div>
     <!-- error console -->
